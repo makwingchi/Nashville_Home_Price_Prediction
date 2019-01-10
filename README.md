@@ -1,44 +1,4 @@
----
-title: "Home Price Prediction in Nashville, TN"
-author: "Rongzhi Mai"
-date: "Nov. 11, 2018"
-output:
-  html_document: 
-    code_folding: "hide"
----
-
-<style type="text/css">
-
-body{ /* Normal  */
-      font-size: 15px;
-  }
-td {  /* Table  */
-  font-size: 13px;
-}
-h1.title {
-  font-size: 38px;
-  color: DarkRed;
-}
-h1 { /* Header 1 */
-  font-size: 28px;
-  color: DarkBlue;
-}
-h2 { /* Header 2 */
-    font-size: 22px;
-  color: DarkBlue;
-}
-h3 { /* Header 3 */
-  font-size: 18px;
-  color: DarkBlue;
-}
-code.r{ /* Code block */
-    font-size: 10px;
-}
-pre { /* Code block - determines code spacing between lines */
-    font-size: 12px;
-}
-</style>
-
+# Home Price Prediction in Nashville, TN
 
 * [1. Introduction](#link1)
 * [2. Data](#link2)
@@ -85,18 +45,18 @@ vars_train <-
 
 ***
 
-# 1. Introduction{#link1}
-Zillow, one of the nation¡¯s largest and most powerful real estate online databases, has always been endeavoring to provide and predict estimates of home values for its users. However, it has been realized that its housing market predictions aren¡¯t as accurate as they could be. Housing price prediction is indeed not an easy task since so many factors are at play. It is very difficult to find effective determinants and reduce the bias of the prediction. In this project, we are making every effort to dig deeper and build a more reliable predictive model which would be more useful in Nashville¡¯s real estate market.
+# 1. Introduction
+Zillow, one of the nationÂ¡Â¯s largest and most powerful real estate online databases, has always been endeavoring to provide and predict estimates of home values for its users. However, it has been realized that its housing market predictions arenÂ¡Â¯t as accurate as they could be. Housing price prediction is indeed not an easy task since so many factors are at play. It is very difficult to find effective determinants and reduce the bias of the prediction. In this project, we are making every effort to dig deeper and build a more reliable predictive model which would be more useful in NashvilleÂ¡Â¯s real estate market.
 
 The primary methodology adopted here is Ordinary Least Squares (OLS) regression, where the home price is a linear function of a set of predicting variables. We introduced 20 independent variables in our final model, including internal characteristics of the houses, demographic predictors at block group level, amenities and public services, as well as spatial lag effects of nearby home sales. 
 
-Overall, our final model is able to explain 65.2% of the variation in home sale prices. The predicted prices our model generates will not differ from the true values by much. The cross-validation technique suggests that the predicted home prices (in log format) are approximately 0.29 different from the true values. Other regression statistics such as the root mean square error (RMSE) and R-squared are also ideal, indicating our model is able to predict unseen data equally well across datasets. When it comes to spatial generalizability, on one hand, Moran¡¯s I test informed us that there is no significant spatial auto-correlation in our model; on the other, even when we apply zip code as our unit of analysis, it seems that the performance of the model is quite stable across zip codes with different economic level. 
+Overall, our final model is able to explain 65.2% of the variation in home sale prices. The predicted prices our model generates will not differ from the true values by much. The cross-validation technique suggests that the predicted home prices (in log format) are approximately 0.29 different from the true values. Other regression statistics such as the root mean square error (RMSE) and R-squared are also ideal, indicating our model is able to predict unseen data equally well across datasets. When it comes to spatial generalizability, on one hand, MoranÂ¡Â¯s I test informed us that there is no significant spatial auto-correlation in our model; on the other, even when we apply zip code as our unit of analysis, it seems that the performance of the model is quite stable across zip codes with different economic level. 
 
 
 ***
 
-# 2. Data{#link2}
-## 2.1. Overview{#link3}
+# 2. Data
+## 2.1. Overview
 First of all, 9,001 samples are included in the dataset we use. We notice there are 570 homes sitting on vacant residential land, and hence consider them as outliers. When building our prediction model, we will get rid of these observations.
 
 The dependent variable we use in this home price prediction is, no doubt, the sale price of each house. This information is available in the Nashville homesales dataset. Later we will discuss why we take the log of the dependent variable.
@@ -254,7 +214,7 @@ kable(table1, caption = 'Summary of Variables in the Prediction Model') %>%
 </tbody>
 </table>
 
-## 2.2. Exploratory Analysis{#link4}
+## 2.2. Exploratory Analysis
 There are some variables whose distribution are not normal. In these cases, we apply log transformation towards those variables. A typical example would be our dependent variable - home sale price, which is shown below.
 
 
@@ -544,7 +504,7 @@ corrplot(M, method = "shade")
 
 <img src="markdown_files/figure-html/correlation matrix-1.png" width="576" />
 
-## 2.3. Maps of Variables{#link5}
+## 2.3. Maps of Variables
 We first take a look at the distribution of home sale price in the city. Though we use the log transformation in the model, here we think the original values are much more straightforward.
 
 
@@ -629,7 +589,7 @@ ggmap(map3) +
 
 <img src="markdown_files/figure-html/proportion of economically disabled students-1.png" width="672" />
 
-## 2.4. Comparison between houses with offsite and onsite owners{#link6}
+## 2.4. Comparison between houses with offsite and onsite owners
 Below shows the variable distribution for houses where the owners are onsite or offsite. Illustrated by the box plots, generally the median of log saleprice for onsite houses are higher, and its distribution is a bit more condensed.
 
 
@@ -654,14 +614,14 @@ ggplot(data = OffOrOnsite, aes(offsite, value)) +
 
 ***
 
-# 3. Methods{#link7}
+# 3. Methods
 The method we use is called Ordinary Least Squares regression, and we will go through four steps in the following sections. 
 
 The first step is in-sample prediction. Initially the team has more than 300 independent variables, but we narrow down to only 20 without worsening the model's performance. This step is essential for us to get a sense of how the model behaves using the whole dataset. The second one is out-of-sample prediction, in which we randomly select 75% of the data to train the model, and use the remaining 25% to test it. One of the goals of predictive modeling is generalizability, consequently, we would want to know if the model predicts well for the data it has not seen yet. However, one can barely make sure whether a randomly selected data sample is representative enough. This makes sense of our third step - cross validation. Basically it is similar to the previous one, except that we will evaluate how generalizable our model is to a number of random samples. The last step would be to assess model generalizability across space. We use zipcode districts as the unit of analysis to see whether the model is able to perform equally well across different zipcodes.
 
 ***
 
-# 4. Results{#link8}
+# 4. Results
 Here is the regression formula we utilize in the prediction.
 
 
@@ -675,7 +635,7 @@ reg1 <- lm(log_SalePrice ~ age_factor + bedroom_factor + baths_factor +
            data = vars_train)
 ```
 
-## 4.1. In-Sample Prediction{#link9}
+## 4.1. In-Sample Prediction
 The results of in-sample prediction are shown as follows. The first table illustrates the overall model performance, and it indicates that 65.2% variation of homesale price can be explained by our independent variables. In addition, the second table details how each indicator performs in the model. The number of stars means how significant a particular variable is.
 
 
@@ -982,7 +942,7 @@ ggmap(map3) +
 
 <img src="markdown_files/figure-html/predicted prices for home sales-1.png" width="672" />
 
-## 4.2. Out-of-sample Prediction{#link10}
+## 4.2. Out-of-sample Prediction
 As previously mentioned, one of the goals of predictive modeling is generalizability, so we separate the data into two parts: 75% randomly selected training set and 25% remaining test set. The performance of our model is evaluated mainly based on Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE). The former informs us the average difference between predicted prices and observed prices, while the latter the average difference **in percentage** between predicted and observed home sale prices.
 
 For this specific test set, the MAE is slightly less than 90K dollars, and the MAPE is 36%.
@@ -1060,7 +1020,7 @@ ggmap(map3) +
 
 <img src="markdown_files/figure-html/residuals for 25 pct randomly selected test set-1.png" width="672" />
 
-However, we think it would be more straightforward if we can use some kind of metrics to evaluate spatial auto-correlation, namely dispersed, random, or clustered. As a result, we compute Moran¡¯s I index of the residuals of the test set. Moran¡¯s I ranges from +1 (clustered) to -1 (dispersed). For our test set here, the p-value is way above 0.05, meaning that spatial auto-correlation of the residuals is not significant.
+However, we think it would be more straightforward if we can use some kind of metrics to evaluate spatial auto-correlation, namely dispersed, random, or clustered. As a result, we compute MoranÂ¡Â¯s I index of the residuals of the test set. MoranÂ¡Â¯s I ranges from +1 (clustered) to -1 (dispersed). For our test set here, the p-value is way above 0.05, meaning that spatial auto-correlation of the residuals is not significant.
 
 
 ```r
@@ -1092,7 +1052,7 @@ kable(table7, align = "l", col.names = c('Moran I Statistic', 'Expectation', 'Va
 </tbody>
 </table>
 
-## 4.3. Cross-Validation{#link11}
+## 4.3. Cross-Validation
 Cross-validation allows us to see how generalizable our model is to a number of random samples, instead of just one sample in the previous section. Here, we used an algorithm called '100-fold cross-validation'. This methodology allows us to first partition the entire data frame into 100 equally sized subsets, hold out one of those subsets as the test set, train the model using the remaining 99 subsets, predict for the hold out subset, and record a goodness of fit metric. The average of the goodness of fit metrics across all 100 folds will also be generated.
 
 The mean of the R^2 here is 0.66, indicating generally 66% of variation of homesale price can be explained by our independent variables. The MAE of 0.29 indicates that the average difference between predicted and observed prices is 0.29 after log transformation.
@@ -1157,7 +1117,7 @@ ggplot(as.data.frame(lmFit$resample), aes(MAE)) +
 <img src="markdown_files/figure-html/histogram of 100-fold cv R^2-1.png" width="50%" /><img src="markdown_files/figure-html/histogram of 100-fold cv R^2-2.png" width="50%" />
 
 
-## 4.4. Generalizability across space{#link12}
+## 4.4. Generalizability across space
 Other than generalizability across data samples, as spatial analysts, we also care about generalizability across space. Here, we choose zipcode districts as our unit of analysis, and analyze whether the model is generalizable across different zipcodes.
 
 The map below illustrates the mean absolute percentage error by zip code using the above 25% test set. The lighter the color is, the better our model performs. Those 'empty' zipcodes are the ones without any home sales. Admittedly, the MAPE for some zipcodes are relatively high, and there is one whose MAPE is over 1, but we think this might result from the small sample size. In a later section we will see our model is able to perform similarly well in three zipcodes with different income level.
@@ -1584,28 +1544,28 @@ ggplot(Compare_Neighborhoods) +
 
 ***
 
-# 5. Discussion{#link13}
+# 5. Discussion
 
-Generally speaking, we believe our model is an effective one, because it¡¯s both relatively accurate and generalizable. First of all, the model could account for around 65.2% of variations for home sale prices. In addition, almost every single independent variable in our model is statistically significant at least at 95% confidence level, suggesting the reliable predicting power of the model. Regarding generalizability, the cross-validation technique suggests that the home prices (in log format) our model produces are approximately 0.29 different from the true values. Other indicators such as the low standard deviation of R-squared (0.085) in the 100-fold cross-validation test also indicates our model is able to perform well in most subsets. As spatial analysts, we also care about generalizability across space. According to Moran¡¯s I test, there is no significant spatial auto-correlation in the model. The model performs similarly well across zip codes with different levels of wealth as well. Therefore, it¡¯s reasonable to consider our final model useful to predict home prices in Nashville, Tennessee.
+Generally speaking, we believe our model is an effective one, because itÂ¡Â¯s both relatively accurate and generalizable. First of all, the model could account for around 65.2% of variations for home sale prices. In addition, almost every single independent variable in our model is statistically significant at least at 95% confidence level, suggesting the reliable predicting power of the model. Regarding generalizability, the cross-validation technique suggests that the home prices (in log format) our model produces are approximately 0.29 different from the true values. Other indicators such as the low standard deviation of R-squared (0.085) in the 100-fold cross-validation test also indicates our model is able to perform well in most subsets. As spatial analysts, we also care about generalizability across space. According to MoranÂ¡Â¯s I test, there is no significant spatial auto-correlation in the model. The model performs similarly well across zip codes with different levels of wealth as well. Therefore, itÂ¡Â¯s reasonable to consider our final model useful to predict home prices in Nashville, Tennessee.
 
-During data wrangling, we did find some interesting variables. First, we surprisingly found that the distance to nearest 20 public art collections is a significant predictor of home prices. A culture of art appreciation might have formed in Nashville. Thus, proximity to art collections adds value to homes. Public art locations cluster in the core of the city, helping explain the relatively high sales prices there. Second, the total finished area with a negative adjustment amount in case the computer sketch routine is not precise enough is a powerful predicting factor. This indicates that a more accurate home area is helpful when considering the impact on home prices. Third, the proportion of economically disabled students in nearest 15 public schools has negative influence on home prices. The reason might be that parents believe the better the economic conditions of students¡¯ families, the better the teaching quality of the schools and academic performance of students.
+During data wrangling, we did find some interesting variables. First, we surprisingly found that the distance to nearest 20 public art collections is a significant predictor of home prices. A culture of art appreciation might have formed in Nashville. Thus, proximity to art collections adds value to homes. Public art locations cluster in the core of the city, helping explain the relatively high sales prices there. Second, the total finished area with a negative adjustment amount in case the computer sketch routine is not precise enough is a powerful predicting factor. This indicates that a more accurate home area is helpful when considering the impact on home prices. Third, the proportion of economically disabled students in nearest 15 public schools has negative influence on home prices. The reason might be that parents believe the better the economic conditions of studentsÂ¡Â¯ families, the better the teaching quality of the schools and academic performance of students.
 
 Some independent variables in our model are more effective in terms of significant level. In internal characteristics, whether the home is single-family home, total finished area with an adjustment, lot size, and whether the owner is offsite are more important than others. Generally, the larger the home and land, the higher the sales price. Being a single-family home adds value to homes, which is probably because of home buyers' preference for privacy. Having an offsite owner, on the other hand, leads to the decrease of home sales price perhaps due to some inconvenience brought by it. As for demographic predictors, median home values in block groups and proportion of white population are more important in predicting home prices. When it comes to amenities and public services, as discussed above, distance to public art collections plays a very important role. All spatial lag variables are essential and significant at 99.9% level in predicting home sales prices. These predictors also have larger coefficients. This is easy to understand because almost every buyer would take nearby prices as a reference for surrounding environment.
 
-To examine the effectiveness and generalizability of our model, we conducted a 25% randomly selected out-of-sample test and a 100-fold cross-validation test. In the 25% test set, the average difference between predicted prices and observed prices (MAE) is slightly less than $90k, and the average difference in percentage between these two (MAPE) is 36%. Shown by the cross-validation test, the average difference between predicted and observed home prices is 0.29 after log transformation. The low standard deviations of both MAE and R-squared are another proof of the model¡¯s ability to perform well in most cases. Consequently, we are confident on our model¡¯s generalizability across different datasets. 
+To examine the effectiveness and generalizability of our model, we conducted a 25% randomly selected out-of-sample test and a 100-fold cross-validation test. In the 25% test set, the average difference between predicted prices and observed prices (MAE) is slightly less than $90k, and the average difference in percentage between these two (MAPE) is 36%. Shown by the cross-validation test, the average difference between predicted and observed home prices is 0.29 after log transformation. The low standard deviations of both MAE and R-squared are another proof of the modelÂ¡Â¯s ability to perform well in most cases. Consequently, we are confident on our modelÂ¡Â¯s generalizability across different datasets. 
 
-When it comes to spatial generalizability, the Moran¡¯s I test for the residuals shows that there is no significant spatial auto-correlation here. Admittedly, during out-of-sample prediction, the prediction errors in a few zip code districts are indeed relatively high, but it may just result from the small housing sample size. The later ¡®spatial cross-validation¡¯ proves the model¡¯s generalizability across space. Specifically, the average difference between predicted and observed home prices (in log format) ranges from 0.269 in wealthy zip codes, to 0.327 in poor zip codes, which is not a big gap. That said, we still cannot ignore the fact that our model performs better in where the mean price of houses or individuals¡¯ income level is higher. This suggests the model is likely still missing some factors associated with the prices of lower-income neighborhood houses.
+When it comes to spatial generalizability, the MoranÂ¡Â¯s I test for the residuals shows that there is no significant spatial auto-correlation here. Admittedly, during out-of-sample prediction, the prediction errors in a few zip code districts are indeed relatively high, but it may just result from the small housing sample size. The later Â¡Â®spatial cross-validationÂ¡Â¯ proves the modelÂ¡Â¯s generalizability across space. Specifically, the average difference between predicted and observed home prices (in log format) ranges from 0.269 in wealthy zip codes, to 0.327 in poor zip codes, which is not a big gap. That said, we still cannot ignore the fact that our model performs better in where the mean price of houses or individualsÂ¡Â¯ income level is higher. This suggests the model is likely still missing some factors associated with the prices of lower-income neighborhood houses.
 
-
-***
-
-# 6. Conclusion{#link14}
-
-We would recommend our model to Zillow in their future home price analysis and prediction, not only because our model is able to explain the majority of variation of home sale prices, but also its generalizability across both different datasets and space. However, it does not mean there is no room for improvement. As previously mentioned, we should try to find and introduce more effective factors correlated with prices of homes in poorer districts to better the model¡¯s performance and make the model more generalizable across the entire city. In addition,  it would be beneficial for us to get the exact year when the houses were sold. The reason is that almost every economic phenomenon has something to do with time.
 
 ***
 
-# APPENDIX{#link15}
+# 6. Conclusion
+
+We would recommend our model to Zillow in their future home price analysis and prediction, not only because our model is able to explain the majority of variation of home sale prices, but also its generalizability across both different datasets and space. However, it does not mean there is no room for improvement. As previously mentioned, we should try to find and introduce more effective factors correlated with prices of homes in poorer districts to better the modelÂ¡Â¯s performance and make the model more generalizable across the entire city. In addition,  it would be beneficial for us to get the exact year when the houses were sold. The reason is that almost every economic phenomenon has something to do with time.
+
+***
+
+# APPENDIX
 This section includes how the data used in the above analyses are collected and processed. The original dataset called "train.and.test_student.csv" contains several fields of homesales characteristics.
 
 We first wrangle the internal characteristics as follows.
