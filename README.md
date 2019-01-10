@@ -43,7 +43,6 @@ vars_train <-
   filter(LandUseFul != 'VACANT RESIDENTIAL LAND')
 ```
 
-***
 
 # 1. Introduction
 Zillow, one of the nation¡¯s largest and most powerful real estate online databases, has always been endeavoring to provide and predict estimates of home values for its users. However, it has been realized that its housing market predictions aren¡¯t as accurate as they could be. Housing price prediction is indeed not an easy task since so many factors are at play. It is very difficult to find effective determinants and reduce the bias of the prediction. In this project, we are making every effort to dig deeper and build a more reliable predictive model which would be more useful in Nashville¡¯s real estate market.
@@ -52,8 +51,6 @@ The primary methodology adopted here is Ordinary Least Squares (OLS) regression,
 
 Overall, our final model is able to explain 65.2% of the variation in home sale prices. The predicted prices our model generates will not differ from the true values by much. The cross-validation technique suggests that the predicted home prices (in log format) are approximately 0.29 different from the true values. Other regression statistics such as the root mean square error (RMSE) and R-squared are also ideal, indicating our model is able to predict unseen data equally well across datasets. When it comes to spatial generalizability, on one hand, Moran¡¯s I test informed us that there is no significant spatial auto-correlation in our model; on the other, even when we apply zip code as our unit of analysis, it seems that the performance of the model is quite stable across zip codes with different economic level. 
 
-
-***
 
 # 2. Data
 ## 2.1. Overview
@@ -612,14 +609,10 @@ ggplot(data = OffOrOnsite, aes(offsite, value)) +
 
 <img src="markdown_files/figure-html/variable distribution boxplots-1.png" width="768" />
 
-***
-
 # 3. Methods
 The method we use is called Ordinary Least Squares regression, and we will go through four steps in the following sections. 
 
 The first step is in-sample prediction. Initially the team has more than 300 independent variables, but we narrow down to only 20 without worsening the model's performance. This step is essential for us to get a sense of how the model behaves using the whole dataset. The second one is out-of-sample prediction, in which we randomly select 75% of the data to train the model, and use the remaining 25% to test it. One of the goals of predictive modeling is generalizability, consequently, we would want to know if the model predicts well for the data it has not seen yet. However, one can barely make sure whether a randomly selected data sample is representative enough. This makes sense of our third step - cross validation. Basically it is similar to the previous one, except that we will evaluate how generalizable our model is to a number of random samples. The last step would be to assess model generalizability across space. We use zipcode districts as the unit of analysis to see whether the model is able to perform equally well across different zipcodes.
-
-***
 
 # 4. Results
 Here is the regression formula we utilize in the prediction.
@@ -1542,8 +1535,6 @@ ggplot(Compare_Neighborhoods) +
 
 <img src="markdown_files/figure-html/scatterplot of predicted vs. observed for the three neighborhoods-1.png" width="672" />
 
-***
-
 # 5. Discussion
 
 Generally speaking, we believe our model is an effective one, because it¡¯s both relatively accurate and generalizable. First of all, the model could account for around 65.2% of variations for home sale prices. In addition, almost every single independent variable in our model is statistically significant at least at 95% confidence level, suggesting the reliable predicting power of the model. Regarding generalizability, the cross-validation technique suggests that the home prices (in log format) our model produces are approximately 0.29 different from the true values. Other indicators such as the low standard deviation of R-squared (0.085) in the 100-fold cross-validation test also indicates our model is able to perform well in most subsets. As spatial analysts, we also care about generalizability across space. According to Moran¡¯s I test, there is no significant spatial auto-correlation in the model. The model performs similarly well across zip codes with different levels of wealth as well. Therefore, it¡¯s reasonable to consider our final model useful to predict home prices in Nashville, Tennessee.
@@ -1556,14 +1547,9 @@ To examine the effectiveness and generalizability of our model, we conducted a 2
 
 When it comes to spatial generalizability, the Moran¡¯s I test for the residuals shows that there is no significant spatial auto-correlation here. Admittedly, during out-of-sample prediction, the prediction errors in a few zip code districts are indeed relatively high, but it may just result from the small housing sample size. The later ¡®spatial cross-validation¡¯ proves the model¡¯s generalizability across space. Specifically, the average difference between predicted and observed home prices (in log format) ranges from 0.269 in wealthy zip codes, to 0.327 in poor zip codes, which is not a big gap. That said, we still cannot ignore the fact that our model performs better in where the mean price of houses or individuals¡¯ income level is higher. This suggests the model is likely still missing some factors associated with the prices of lower-income neighborhood houses.
 
-
-***
-
 # 6. Conclusion
 
 We would recommend our model to Zillow in their future home price analysis and prediction, not only because our model is able to explain the majority of variation of home sale prices, but also its generalizability across both different datasets and space. However, it does not mean there is no room for improvement. As previously mentioned, we should try to find and introduce more effective factors correlated with prices of homes in poorer districts to better the model¡¯s performance and make the model more generalizable across the entire city. In addition,  it would be beneficial for us to get the exact year when the houses were sold. The reason is that almost every economic phenomenon has something to do with time.
-
-***
 
 # APPENDIX
 This section includes how the data used in the above analyses are collected and processed. The original dataset called "train.and.test_student.csv" contains several fields of homesales characteristics.
