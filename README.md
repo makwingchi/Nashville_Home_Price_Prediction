@@ -18,4 +18,4 @@ In this project, we have a dataset "train.and.test_student.csv", which contains 
 - `kableExtra`
 
 ### Result
-Please see[markdown.Rmd](https://github.com/makwingchi/Nashville_Home_Price_Prediction/blob/master/markdown.Rmd) or download [markdown.html](https://github.com/makwingchi/Nashville_Home_Price_Prediction/blob/master/markdown.html) in the repository
+Please see [markdown.Rmd](https://github.com/makwingchi/Nashville_Home_Price_Prediction/blob/master/markdown.Rmd) or download [markdown.html](https://github.com/makwingchi/Nashville_Home_Price_Prediction/blob/master/markdown.html) in the repository
